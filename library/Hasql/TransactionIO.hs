@@ -1,8 +1,9 @@
 module Hasql.TransactionIO (
   TransactionIO,
-  statement,
+  condemn,
   sql,
+  statement,
 ) where
 
 -- hasql-transaction-io
-import Hasql.Private.TransactionIO
+import           Hasql.Private.TransactionIO

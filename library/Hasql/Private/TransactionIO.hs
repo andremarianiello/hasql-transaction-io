@@ -3,41 +3,45 @@
 module Hasql.Private.TransactionIO where
 
 -- base
-import Control.Applicative
+import           Control.Applicative
 
 -- bytestring
-import Data.ByteString (ByteString)
+import           Data.ByteString                  (ByteString)
 
 -- bytestring-tree-builder
-import ByteString.TreeBuilder
+import           ByteString.TreeBuilder
 
 -- transformers
-import Control.Monad.Trans.Reader
-import Control.Monad.Trans.Class
+import           Control.Monad.Trans.Class
+import           Control.Monad.Trans.Reader
 
 -- mtl
-import Control.Monad.Error.Class
+import           Control.Monad.Error.Class
 
 -- unliftio-core
-import Control.Monad.IO.Unlift
+import           Control.Monad.IO.Unlift
+
+-- safe-exceptions
+import           Control.Exception.Safe
 
 -- resourcet
-import Data.Acquire
-import Control.Monad.Trans.Resource
+import           Control.Monad.Trans.Resource
+import           Data.Acquire
 
 -- hasql
-import Hasql.Statement
-import Hasql.Session
-import qualified Hasql.Session as Session
+import           Hasql.Session
+import qualified Hasql.Session                    as Session
+import           Hasql.Statement
 
 -- hasql-streaming
-import Hasql.Private.Session.UnliftIO
-import Hasql.Private.Types
-import qualified Hasql.Private.Statements as Statements
+import           Hasql.Private.Session.MonadThrow
+import           Hasql.Private.Session.UnliftIO
+import qualified Hasql.Private.Statements         as Statements
+import           Hasql.Private.Types
 
 -- | A mixture of Hasql statements and arbitrary IO that is all performed during a single transaction
 newtype TransactionIO a = TransactionIO (ReaderT Transaction Session a)
-  deriving (Functor, Applicative, Monad, MonadIO, MonadError QueryError, MonadUnliftIO)
+  deriving (Functor, Applicative, Monad, MonadIO, MonadError QueryError, MonadUnliftIO, MonadThrow)
 
 data Transaction = Transaction
 
@@ -80,3 +84,14 @@ commitTransaction prepare Transaction = do
 rollbackTransaction :: Bool -> Transaction -> Session ()
 rollbackTransaction prepare Transaction = do
   Session.statement () (Statements.rollbackTransaction prepare)
+
+
+
+data CondemnTransactionException = CondemnTransactionException
+  deriving (Show)
+
+instance Exception CondemnTransactionException
+
+-- | Throw a `CondemnTransactionException` that causes the transaction to be rolled back. If you wish to rollback a transaction with a more useful exception use `throwIO`
+condemn :: TransactionIO ()
+condemn = throwIO CondemnTransactionException
