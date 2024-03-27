@@ -1,6 +1,6 @@
 cabal-version: 2.4
 name:          hasql-transaction-io
-version:       0.2.5.0
+version:       0.2.6.0
 license:       MIT
 license-file:  LICENSE
 copyright:     (c) 2022, 2024 Andre Marianiello
@@ -48,7 +48,7 @@ library
 
   other-extensions:   OverloadedStrings
   build-depends:
-    , base                     >=4.14 && <4.19
+    , base                     >=4.14 && <4.20
     , bytestring               >=0.10 && <0.12
     , bytestring-tree-builder  ^>=0.2
     , exceptions               ^>=0.10

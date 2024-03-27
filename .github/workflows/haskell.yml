@@ -11,13 +11,13 @@ jobs:
     strategy:
       matrix:
         ghc: ['8.10.7', '9.2.8', '9.4.8', '9.6.4', '9.8.2', 'latest']
-        cabal: ['3.6', '3.10']
+        cabal: ['3.10']
         os: [ubuntu-latest]
     name: GHC ${{ matrix.ghc }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
-    - uses: haskell/actions/setup@v1
+    - uses: haskell-actions/setup@v2
       with:
         ghc-version: ${{ matrix.ghc }}
         cabal-version: ${{ matrix.cabal }}
