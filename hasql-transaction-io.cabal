@@ -1,6 +1,6 @@
 cabal-version: 2.4
 name:          hasql-transaction-io
-version:       0.2.6.0
+version:       0.2.7.0
 license:       MIT
 license-file:  LICENSE
 copyright:     (c) 2022, 2024 Andre Marianiello
