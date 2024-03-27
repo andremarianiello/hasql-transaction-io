@@ -1,9 +1,9 @@
 cabal-version: 2.4
 name:          hasql-transaction-io
-version:       0.2.3.0
+version:       0.2.4.0
 license:       MIT
 license-file:  LICENSE
-copyright:     (c) 2022, 2023 Andre Marianiello
+copyright:     (c) 2022, 2024 Andre Marianiello
 maintainer:    andremarianiello@users.noreply.github.com
 author:        Andre Marianiello
 homepage:      https://github.com/andremarianiello/hasql-transaction-io
