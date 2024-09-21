@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Hasql.Private.TransactionIO where
@@ -38,6 +39,10 @@ import           Hasql.Private.Session.MonadThrow
 import           Hasql.Private.Session.UnliftIO
 import qualified Hasql.Private.Statements         as Statements
 import           Hasql.Private.Types
+
+#if MIN_VERSION_hasql(1,7,0)
+type QueryError = SessionError
+#endif
 
 -- | A mixture of Hasql statements and arbitrary IO that is all performed during a single transaction
 newtype TransactionIO a = TransactionIO (ReaderT Transaction Session a)

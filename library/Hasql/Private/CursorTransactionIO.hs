@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Hasql.Private.CursorTransactionIO where
@@ -54,6 +55,10 @@ sql = CursorTransactionIO . lift . lift . TransactionIO.sql
 -- | Like `Session.statement` but in a `CursorTransactionIO`. It should not any statements that cannot be safely run inside a transaction.
 statement :: params -> Statement params result -> CursorTransactionIO s result
 statement params stmt = CursorTransactionIO . lift . lift $ TransactionIO.statement params stmt
+
+#if MIN_VERSION_hasql(1,7,0)
+type QueryError = SessionError
+#endif
 
 ignoreFailedTransactionError :: MonadError QueryError m => m () -> m ()
 ignoreFailedTransactionError sess =
