@@ -41,7 +41,7 @@ import           Hasql.Private.Types
 
 -- | A mixture of Hasql statements and arbitrary IO that is all performed during a single transaction
 newtype TransactionIO a = TransactionIO (ReaderT Transaction Session a)
-  deriving (Functor, Applicative, Monad, MonadIO, MonadError QueryError, MonadUnliftIO, MonadThrow)
+  deriving (Functor, Applicative, Monad, MonadIO, MonadError SessionError, MonadUnliftIO, MonadThrow)
 
 data Transaction = Transaction
 
