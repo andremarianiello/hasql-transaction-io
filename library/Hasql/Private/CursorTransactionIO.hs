@@ -55,7 +55,7 @@ sql = CursorTransactionIO . lift . lift . TransactionIO.sql
 statement :: params -> Statement params result -> CursorTransactionIO s result
 statement params stmt = CursorTransactionIO . lift . lift $ TransactionIO.statement params stmt
 
-ignoreFailedTransactionError :: MonadError QueryError m => m () -> m ()
+ignoreFailedTransactionError :: MonadError SessionError m => m () -> m ()
 ignoreFailedTransactionError sess =
   catchError sess $ \qe -> case qe of
     QueryError _ _ (ResultError (ServerError "25P02" _ _ _ _)) -> pure ()
